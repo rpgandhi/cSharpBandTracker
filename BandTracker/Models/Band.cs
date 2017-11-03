@@ -15,4 +15,27 @@ namespace BandTracker.Models
     _id = Id;
     _bandName = BandName;
   }
+
+  public static List<Band> GetAll()
+  {
+    List<Band> allBands = new List<Band> {};
+    mySqlConnection conn = DB.Connection();
+    conn.Open();
+    mySqlCommand cmd = conn.CreateCommand() as mySqlCommand;
+    cmd.CommandText = @"SELECT * FROM bands;";
+    MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
+    while(rdr.Read())
+    {
+      int bandId = rdr.GetInt32(0);
+      string bandName = rdr.GetString(1);
+      Band newBand = new Band(bandName, bandId);
+      allBands.Add(newBand);
+    }
+    conn.Close();
+    if (conn != null)
+    {
+      conn.Dispose();
+    }
+    return allBands;
+  }
 }

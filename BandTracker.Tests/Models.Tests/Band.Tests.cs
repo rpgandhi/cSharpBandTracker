@@ -7,8 +7,13 @@ using BandTracker.Models;
 namespace BandTracker.Tests
 {
   [TestClass]
-  public class BandTest
+  public class BandTest : IDisposable
   {
+    public void Dispose()
+    {
+      Band.ClearAll();
+    }
+    
     [TestMethod]
     public void Method_Description_ExpectedValue()
     {
