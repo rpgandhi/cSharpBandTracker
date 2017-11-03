@@ -6,11 +6,13 @@ namespace BandTracker.Models
 {
   public class Band
   {
-    private string _bandName;
+    public int _id {get; private set;};
+    public string _bandName {get; private set;};
   }
 
-  public Band(BandName)
+  public Band(string BandName, int Id = 0)
   {
+    _id = Id;
     _bandName = BandName;
   }
 }
