@@ -1,0 +1,32 @@
+@{
+  Layout = "_Layout";
+}
+
+@using BandTracker.Models;
+@var VenueId = Model["venue"].GetVenueId()
+<h1>Venue List</h1>
+<h2>Venue: @Model["venue"].GetVenueName()</h2>
+<hr />
+@if (@Model["bands_venues"].Count != 0)//Does the join table name go in the parenthesis or something else?//
+
+{
+  <h4>Here are all the bands that play at this venue:</h4>
+  <ul>
+    @foreach (var band in @Model["bands_venues"])
+    {
+      <li>@band.GetBandName()</li>
+    }
+  </ul>
+}
+<h4>Add a band to this venue:</h4>
+<form action=($'/venues/{venueId}/venues/new') method='post'>
+  <label for='band-id'>Select a band</label>
+  <select id='band-id' name='band-id' type='text'>
+    @foreach (var band in @Model["allBands"])
+    {
+      <option value='@band.GetBandId()'>@band.GetBandName()</option>
+    }
+  </select>
+  <button type='submit'>Add</button>
+</form>
+<p><a href="/">Return to Main Page</a></p>

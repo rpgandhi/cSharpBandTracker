@@ -1,0 +1,12 @@
+@{
+  Layout = "_Layout";
+}
+
+<h1>Add a new venue</h1>
+<form action="/venues/new" method="post">
+  <label for="venue-name">Venue name:</label>
+  <input id="venue-name" name="venue-name" type="text">
+  <button type="submit">Add new venue</button>
+</form>
+<p><a href="/">Back home</a></p>
+<p><a href="/venues">View all venues</a></p>

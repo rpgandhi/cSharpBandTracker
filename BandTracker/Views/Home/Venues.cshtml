@@ -1,3 +1,18 @@
 @{
   Layout = "_Layout";
 }
+
+<h1>Venue List</h1>
+<hr />
+<h2>Venues:</h2>
+@if (Model.Count != 0)
+{
+  <ul>
+    @foreach (var venue in Model)
+    {
+      <li><a href="/venues/@venue.GetVenueId()">@venue.GetVenueName()</a></li>
+    }
+  </ul>
+}
+<h4><a href="/venue/new">Add a new venue</a></h4>
+<h4><a href="/">Home</a></h4>
