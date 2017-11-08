@@ -13,6 +13,7 @@ namespace BandTracker.Tests
     public void Dispose()
     {
       Band.DeleteAll();
+      Venue.DeleteAll();
     }
 
     public BandTests()
@@ -117,6 +118,7 @@ namespace BandTracker.Tests
 
       List<Venue> result = testBand.GetVenues();
       List<Venue> testList = new List<Venue>{testVenue};
+      Console.WriteLine("################"+ result + testList);
 
       //Assert
       CollectionAssert.AreEqual(testList, result);
