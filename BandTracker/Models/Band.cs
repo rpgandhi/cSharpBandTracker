@@ -180,73 +180,109 @@ namespace BandTracker.Models
       }
     }
 
-    public void AddVenue(Venue newVenue)
-    {
-      MySqlConnection conn = DB.Connection();
-      conn.Open();
-      var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"INSERT INTO bands_venues (venue_id, band_id) VALUES (@VenueId, @BandId);";
+    // public void AddVenue(Venue newVenue)
+    // {
+    //   MySqlConnection conn = DB.Connection();
+    //   conn.Open();
+    //   var cmd = conn.CreateCommand() as MySqlCommand;
+    //   cmd.CommandText = @"INSERT INTO bands_venues (venue_id, band_id) VALUES (@VenueId, @BandId);";
+    //
+    //   MySqlParameter venue_id = new MySqlParameter();
+    //   venue_id.ParameterName = "@VenueId";
+    //   venue_id.Value = newVenue.GetVenueId();
+    //   cmd.Parameters.Add(venue_id);
+    //
+    //   MySqlParameter band_id = new MySqlParameter();
+    //   band_id.ParameterName = "@BandId";
+    //   band_id.Value = _id;
+    //   cmd.Parameters.Add(band_id);
+    //
+    //   cmd.ExecuteNonQuery();
+    //   conn.Close();
+    //   if (conn != null)
+    //   {
+    //       conn.Dispose();
+    //   }
+    // }
 
-      MySqlParameter venue_id = new MySqlParameter();
-      venue_id.ParameterName = "@VenueId";
-      venue_id.Value = newVenue.GetVenueId();
-      cmd.Parameters.Add(venue_id);
-
-      MySqlParameter band_id = new MySqlParameter();
-      band_id.ParameterName = "@BandId";
-      band_id.Value = _id;
-      cmd.Parameters.Add(band_id);
-
-      cmd.ExecuteNonQuery();
-      conn.Close();
-      if (conn != null)
-      {
-          conn.Dispose();
-      }
-    }
+    // public List<Venue> GetVenues()
+    // {
+    //   MySqlConnection conn = DB.Connection();
+    //   conn.Open();
+    //   var cmd = conn.CreateCommand() as MySqlCommand;
+    //   cmd.CommandText = @"SELECT venue_id FROM bands_venues WHERE band_id = @bandId;";
+    //
+    //   MySqlParameter bandIdParameter = new MySqlParameter();
+    //   bandIdParameter.ParameterName = "@bandId";
+    //   bandIdParameter.Value = _id;
+    //   cmd.Parameters.Add(bandIdParameter);
+    //
+    //   var rdr = cmd.ExecuteReader() as MySqlDataReader;
+    //
+    //   List<int> venueIds = new List<int> {};
+    //   while(rdr.Read())
+    //   {
+    //       int venueId = rdr.GetInt32(0);
+    //       venueIds.Add(venueId);
+    //   }
+    //   rdr.Dispose();
+    //
+    //   List<Venue> venues = new List<Venue> {};
+    //   foreach (int venueId in venueIds)
+    //   {
+    //       var venueQuery = conn.CreateCommand() as MySqlCommand;
+    //       venueQuery.CommandText = @"SELECT * FROM venues WHERE id = @VenueId;";
+    //
+    //       MySqlParameter venueIdParameter = new MySqlParameter();
+    //       venueIdParameter.ParameterName = "@VenueId";
+    //       venueIdParameter.Value = venueId;
+    //       venueQuery.Parameters.Add(venueIdParameter);
+    //
+    //       var venueQueryRdr = venueQuery.ExecuteReader() as MySqlDataReader;
+    //       while(venueQueryRdr.Read())
+    //       {
+    //           int thisVenueId = venueQueryRdr.GetInt32(0);
+    //           string venueName = venueQueryRdr.GetString(1);
+    //           Venue foundVenue = new Venue(venueName, thisVenueId);
+    //           venues.Add(foundVenue);
+    //       }
+    //       venueQueryRdr.Dispose();
+    //   }
+    //   conn.Close();
+    //   if (conn != null)
+    //   {
+    //       conn.Dispose();
+    //   }
+    //   return venues;
+    // }
 
     public List<Venue> GetVenues()
     {
+      //Task = Venue
+      //Category = Band
       MySqlConnection conn = DB.Connection();
       conn.Open();
-      var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT venue_id FROM bands_venues WHERE band_id = @bandId;";
+      var venueQuery = conn.CreateCommand() as MySqlCommand;
+      // var venueQuery = conn.CreateCommand() as MySqlCommand;
+      venueQuery.CommandText = @"SELECT venues.* FROM bands
+          JOIN bands_venues ON (bands.id = bands_venues.band_id)
+          JOIN venues ON (bands_venues.venue_id = venues.id)
+          WHERE bands.id = @BandId;";
 
       MySqlParameter bandIdParameter = new MySqlParameter();
-      bandIdParameter.ParameterName = "@bandId";
+      bandIdParameter.ParameterName = "@BandId";
       bandIdParameter.Value = _id;
-      cmd.Parameters.Add(bandIdParameter);
+      venueQuery.Parameters.Add(bandIdParameter);
 
-      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      var rdr = venueQuery.ExecuteReader() as MySqlDataReader;
+      List<Venue> venues = new List<Venue>{};
 
-      List<int> venueIds = new List<int> {};
       while(rdr.Read())
       {
-          int venueId = rdr.GetInt32(0);
-          venueIds.Add(venueId);
-      }
-      rdr.Dispose();
-
-      List<Venue> venues = new List<Venue> {};
-      foreach (int venueId in venueIds)
-      {
-          var venueQuery = conn.CreateCommand() as MySqlCommand;
-          venueQuery.CommandText = @"SELECT * FROM venues WHERE id = @VenueId;";
-
-          MySqlParameter venueIdParameter = new MySqlParameter();
-          venueIdParameter.ParameterName = "@VenueId";
-          venueIdParameter.Value = venueId;
-          venueQuery.Parameters.Add(venueIdParameter);
-
-          var venueQueryRdr = venueQuery.ExecuteReader() as MySqlDataReader;
-          while(venueQueryRdr.Read())
-          {
-              int thisVenueId = venueQueryRdr.GetInt32(0);
-              string venueName = venueQueryRdr.GetString(1);
-              Venue foundVenue = new Venue(venueName, thisVenueId);
-              venues.Add(foundVenue);
-          }
-          venueQueryRdr.Dispose();
+        int venueId = rdr.GetInt32(0);
+        string venueName = rdr.GetString(1);
+        Venue newVenue = new Venue(venueName, venueId);
+        venues.Add(newVenue);
       }
       conn.Close();
       if (conn != null)
@@ -274,6 +310,33 @@ namespace BandTracker.Models
       if (conn != null)
       {
         conn.Close();
+      }
+    }
+
+    public void AddVenue(Venue newVenue)
+    {
+      //Task = Venue
+      //Category = Band
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"INSERT INTO bands_venues (band_id, venue_id) VALUES (@BandId, @VenueId);";
+
+      MySqlParameter band_id = new MySqlParameter();
+      band_id.ParameterName = "@BandId";
+      band_id.Value = _id;
+      cmd.Parameters.Add(band_id);
+
+      MySqlParameter venue_id = new MySqlParameter();
+      venue_id.ParameterName = "@VenueId";
+      venue_id.Value = newVenue.GetVenueId();
+      cmd.Parameters.Add(venue_id);
+
+      cmd.ExecuteNonQuery();
+      conn.Close();
+      if (conn != null)
+      {
+          conn.Dispose();
       }
     }
 
