@@ -123,5 +123,29 @@ namespace BandTracker.Tests
       //Assert
       CollectionAssert.AreEqual(testList, result);
     }
+
+    [TestMethod]
+    public void Delete_DeletesVenueAssociationsFromDatabase_VenueList()
+    {
+      //Task = Venue
+      //Category = Band
+      //Arrange
+      Band testBand = new Band("Metallica");
+      testBand.Save();
+
+      string testName = "Rose Theater";
+      Venue testVenue = new Venue(testName);
+      testVenue.Save();
+
+      //Act
+      testVenue.AddBand(testBand);
+      testVenue.Delete();
+
+      List<Venue> resultBandVenues = testBand.GetVenues();
+      List<Venue> testBandVenues = new List<Venue> {};
+
+      //Assert
+      CollectionAssert.AreEqual(testBandVenues, resultBandVenues);
+    }
   }
 }
