@@ -178,7 +178,6 @@ namespace BandTracker.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var bandQuery = conn.CreateCommand() as MySqlCommand;
-      // var bandQuery = conn.CreateCommand() as MySqlCommand;
       bandQuery.CommandText = @"SELECT bands.* FROM venues
           JOIN bands_venues ON (venues.id = bands_venues.venue_id)
           JOIN bands ON (bands_venues.band_id = bands.id)
