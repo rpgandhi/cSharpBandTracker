@@ -27,87 +27,84 @@ namespace BandTracker.Controllers
         return View(allVenues);
       }
 
-      //NEW TASK
-        [HttpGet("/bands/new")]
-        public ActionResult BandForm()
-        {
-            return View();
-        }
-        [HttpPost("/bands/new")]
-        public ActionResult BandCreate()
-        {
-            Band newBand = new Band(Request.Form["band-name"]);
-            newBand.Save();
-            return View("Success");
-        }
+      [HttpGet("/bands/new")]
+      public ActionResult BandForm()
+      {
+          return View();
+      }
 
-//NEW CATEGORY
-        [HttpGet("/venues/new")]
-        public ActionResult VenueForm()
-        {
-            return View();
-        }
-        [HttpPost("/venues/new")]
-        public ActionResult VenueCreate()
-        {
-            Venue newVenue = new Venue(Request.Form["venue-name"]);
-            newVenue.Save();
-            return View("Success");
-        }
+      [HttpPost("/bands/new")]
+      public ActionResult BandCreate()
+      {
+          Band newBand = new Band(Request.Form["band-name"]);
+          newBand.Save();
+          return View("Success");
+      }
 
-        //ONE TASK
-        [HttpGet("/bands/{id}")]
-        public ActionResult BandDetail(int id)
-        {
-            //Category = Venue
-            //Task = Band
-            Dictionary<string, object> model = new Dictionary<string, object>();
-            Band selectedBand = Band.Find(id);
-            List<Venue> BandVenues = selectedBand.GetVenues();
-            List<Venue> AllVenues = Venue.GetAll();
-            model.Add("band", selectedBand);
-            model.Add("bandVenues", BandVenues);
-            model.Add("allVenues", AllVenues);
-            return View(model);
-        }
+      [HttpGet("/venues/new")]
+      public ActionResult VenueForm()
+      {
+          return View();
+      }
+      [HttpPost("/venues/new")]
+      public ActionResult VenueCreate()
+      {
+          Venue newVenue = new Venue(Request.Form["venue-name"]);
+          newVenue.Save();
+          return View("Success");
+      }
 
-//ONE CATEGORY
-        [HttpGet("/venues/{id}")]
-        public ActionResult VenueDetail(int id)
-        {
-            //Category = Venue
-            //Task = Band
-            Dictionary<string, object> model = new Dictionary<string, object>();
-            Venue SelectedVenue = Venue.Find(id);
-            List<Band> VenueBands = SelectedVenue.GetBands();
-            List<Band> AllBands = Band.GetAll();
-            model.Add("venue", SelectedVenue);
-            model.Add("venueBands", VenueBands);
-            model.Add("allBands", AllBands);
-            return View(model);
-        }
 
-        //ADD TASK TO CATEGORY
-        [HttpPost("venues/{venueId}/bands/new")]
-        public ActionResult VenueAddBand(int venueId)
-        {
-            //Category = Venue
-            //Task = Band
-            Venue venue = Venue.Find(venueId);
-            Band band = Band.Find(Int32.Parse(Request.Form["band-id"]));
-            venue.AddBand(band);
-            return View("Success");
-        }
-//ADD CATEGORY TO TASK
-        [HttpPost("bands/{bandId}/venues/new")]
-        public ActionResult BandAddVenue(int bandId)
-        {
-            //Category = Venue
-            //Task = Band
-            Band band = Band.Find(bandId);
-            Venue venue = Venue.Find(Int32.Parse(Request.Form["venue-id"]));
-            band.AddVenue(venue);
-            return View("Success");
-        }
+      [HttpGet("/bands/{id}")]
+      public ActionResult BandDetail(int id)
+      {
+          //Category = Venue
+          //Task = Band
+          Dictionary<string, object> model = new Dictionary<string, object>();
+          Band selectedBand = Band.Find(id);
+          List<Venue> BandVenues = selectedBand.GetVenues();
+          List<Venue> AllVenues = Venue.GetAll();
+          model.Add("band", selectedBand);
+          model.Add("bandVenues", BandVenues);
+          model.Add("allVenues", AllVenues);
+          return View(model);
+      }
+
+      [HttpGet("/venues/{id}")]
+      public ActionResult VenueDetail(int id)
+      {
+          //Category = Venue
+          //Task = Band
+          Dictionary<string, object> model = new Dictionary<string, object>();
+          Venue SelectedVenue = Venue.Find(id);
+          List<Band> VenueBands = SelectedVenue.GetBands();
+          List<Band> AllBands = Band.GetAll();
+          model.Add("venue", SelectedVenue);
+          model.Add("venueBands", VenueBands);
+          model.Add("allBands", AllBands);
+          return View(model);
+      }
+
+      [HttpPost("venues/{venueId}/bands/new")]
+      public ActionResult VenueAddBand(int venueId)
+      {
+          //Category = Venue
+          //Task = Band
+          Venue venue = Venue.Find(venueId);
+          Band band = Band.Find(Int32.Parse(Request.Form["band-id"]));
+          venue.AddBand(band);
+          return View("Success");
+      }
+
+      [HttpPost("bands/{bandId}/venues/new")]
+      public ActionResult BandAddVenue(int bandId)
+      {
+          //Category = Venue
+          //Task = Band
+          Band band = Band.Find(bandId);
+          Venue venue = Venue.Find(Int32.Parse(Request.Form["venue-id"]));
+          band.AddVenue(venue);
+          return View("Success");
+      }
     }
 }

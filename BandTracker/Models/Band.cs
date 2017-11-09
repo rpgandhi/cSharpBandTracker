@@ -7,12 +7,8 @@ namespace BandTracker.Models
 {
   public class Band
   {
-    // public int _id {get; private set;}
-    // public string _bandName {get; private set;}
-
     private int _id;
     private string _bandName;
-
 
     public Band(string BandName, int Id = 0)
     {
@@ -78,26 +74,21 @@ namespace BandTracker.Models
 
     public static void DeleteAll()
      {
-         MySqlConnection conn = DB.Connection();
-         conn.Open();
+       MySqlConnection conn = DB.Connection();
+       conn.Open();
 
-         var cmd = conn.CreateCommand() as MySqlCommand;
-         cmd.CommandText = @"DELETE FROM bands;";
+       var cmd = conn.CreateCommand() as MySqlCommand;
+       cmd.CommandText = @"DELETE FROM bands;";
 
-         cmd.ExecuteNonQuery();
+       cmd.ExecuteNonQuery();
 
-         conn.Close();
-         if (conn != null)
-         {
-             conn.Dispose();
-         }
+       conn.Close();
+       if (conn != null)
+       {
+           conn.Dispose();
+       }
      }
 
-    //  public override bool Equals(System.Object otherBand)
-    //  {
-    //    Band newBand = (Band) otherBand;
-    //    return this.GetBandName().Equals(newBand.GetBandName());
-    //  }
 
    public override bool Equals(System.Object otherBand)
     {
@@ -116,7 +107,7 @@ namespace BandTracker.Models
 
     public override int GetHashCode()
     {
-         return this.GetBandName().GetHashCode();
+      return this.GetBandName().GetHashCode();
     }
 
     public static Band Find(int id)
@@ -143,7 +134,7 @@ namespace BandTracker.Models
         bandName = rdr.GetString(1);
       }
 
-      Band foundBand= new Band(bandName, bandId);  // This line is new!
+      Band foundBand= new Band(bandName, bandId);
 
        conn.Close();
        if (conn != null)
@@ -151,7 +142,7 @@ namespace BandTracker.Models
         conn.Dispose();
        }
 
-       return foundBand;  // This line is new!
+       return foundBand;
      }
 
     public void UpdateName(string newName)
@@ -179,82 +170,6 @@ namespace BandTracker.Models
           conn.Dispose();
       }
     }
-
-    // public void AddVenue(Venue newVenue)
-    // {
-    //   MySqlConnection conn = DB.Connection();
-    //   conn.Open();
-    //   var cmd = conn.CreateCommand() as MySqlCommand;
-    //   cmd.CommandText = @"INSERT INTO bands_venues (venue_id, band_id) VALUES (@VenueId, @BandId);";
-    //
-    //   MySqlParameter venue_id = new MySqlParameter();
-    //   venue_id.ParameterName = "@VenueId";
-    //   venue_id.Value = newVenue.GetVenueId();
-    //   cmd.Parameters.Add(venue_id);
-    //
-    //   MySqlParameter band_id = new MySqlParameter();
-    //   band_id.ParameterName = "@BandId";
-    //   band_id.Value = _id;
-    //   cmd.Parameters.Add(band_id);
-    //
-    //   cmd.ExecuteNonQuery();
-    //   conn.Close();
-    //   if (conn != null)
-    //   {
-    //       conn.Dispose();
-    //   }
-    // }
-
-    // public List<Venue> GetVenues()
-    // {
-    //   MySqlConnection conn = DB.Connection();
-    //   conn.Open();
-    //   var cmd = conn.CreateCommand() as MySqlCommand;
-    //   cmd.CommandText = @"SELECT venue_id FROM bands_venues WHERE band_id = @bandId;";
-    //
-    //   MySqlParameter bandIdParameter = new MySqlParameter();
-    //   bandIdParameter.ParameterName = "@bandId";
-    //   bandIdParameter.Value = _id;
-    //   cmd.Parameters.Add(bandIdParameter);
-    //
-    //   var rdr = cmd.ExecuteReader() as MySqlDataReader;
-    //
-    //   List<int> venueIds = new List<int> {};
-    //   while(rdr.Read())
-    //   {
-    //       int venueId = rdr.GetInt32(0);
-    //       venueIds.Add(venueId);
-    //   }
-    //   rdr.Dispose();
-    //
-    //   List<Venue> venues = new List<Venue> {};
-    //   foreach (int venueId in venueIds)
-    //   {
-    //       var venueQuery = conn.CreateCommand() as MySqlCommand;
-    //       venueQuery.CommandText = @"SELECT * FROM venues WHERE id = @VenueId;";
-    //
-    //       MySqlParameter venueIdParameter = new MySqlParameter();
-    //       venueIdParameter.ParameterName = "@VenueId";
-    //       venueIdParameter.Value = venueId;
-    //       venueQuery.Parameters.Add(venueIdParameter);
-    //
-    //       var venueQueryRdr = venueQuery.ExecuteReader() as MySqlDataReader;
-    //       while(venueQueryRdr.Read())
-    //       {
-    //           int thisVenueId = venueQueryRdr.GetInt32(0);
-    //           string venueName = venueQueryRdr.GetString(1);
-    //           Venue foundVenue = new Venue(venueName, thisVenueId);
-    //           venues.Add(foundVenue);
-    //       }
-    //       venueQueryRdr.Dispose();
-    //   }
-    //   conn.Close();
-    //   if (conn != null)
-    //   {
-    //       conn.Dispose();
-    //   }
-    //   return venues;
-    // }
 
     public List<Venue> GetVenues()
     {
@@ -339,11 +254,5 @@ namespace BandTracker.Models
           conn.Dispose();
       }
     }
-
-    // public List<Venue> GetVenues()
-    // {
-    //   List<Venue> venues = new List<Venue> {};
-    //   return venues;
-    // }
   }
 }
