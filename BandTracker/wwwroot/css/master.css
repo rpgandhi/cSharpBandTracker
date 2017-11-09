@@ -1,3 +1,5 @@
 body {
   font-family: sans-serif;
+  background-image: url("img/concert.jpg");
+  background-color: red;
 }

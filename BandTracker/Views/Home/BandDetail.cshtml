@@ -3,23 +3,23 @@
 }
 @* Task = Band *@
 @using BandTracker.Models;
-@var bandId = @Model["band"].GetBandId();
+
 
 <h1>Band List</h1>
 <h2>Band: @Model["band"].GetBandName()</h2>
 <hr />
-@if (@Model["bands_venues"].Count != 0)
+@if (@Model["bandVenues"].Count != 0)
 {
   <h4>This band plays at these venues:</h4>
   <ul>
-    @foreach (Venue venue in @Model["bands_venues"])
+    @foreach (var venue in @Model["bandVenues"])
     {
       <li>@venue.GetVenueName()</li>
     }
   </ul>
 }
 <h4>Add a venue to this band:</h4>
-<form action=($'/bands/{bandId}/venues/new') method='post'>
+<form action="/bands/@Model["band"].GetBandId()/venues/new" method='post'>
   <label for='venue-id'>Select a venue</label>
   <select id='venue-id' name='venue-id' type='text'>
     @foreach (var venue in @Model["allVenues"])
