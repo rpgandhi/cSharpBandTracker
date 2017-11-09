@@ -5,8 +5,8 @@
 @using BandTracker.Models;
 
 
-<h1>Band List</h1>
-<h2>Band: @Model["band"].GetBandName()</h2>
+<h1>Band Details</h1>
+<h2>Name: @Model["band"].GetBandName()</h2>
 <hr />
 @if (@Model["bandVenues"].Count != 0)
 {
@@ -18,7 +18,8 @@
     }
   </ul>
 }
-<h4>Add a venue to this band:</h4>
+<h4>Add a venue for this band:</h4>
+
 <form action="/bands/@Model["band"].GetBandId()/venues/new" method='post'>
   <label for='venue-id'>Select a venue</label>
   <select id='venue-id' name='venue-id' type='text'>
@@ -29,4 +30,43 @@
   </select>
   <button type='submit'>Add</button>
 </form>
+
+<br>
+<h4>Update this band:</h4>
+
+<form action="/bands/@Model["band"].GetBandId()/update" method='post'>
+  @* <label for='band-id'>Select a band</label>
+  <select id='band-id' name='band-id' type='text'>
+    @foreach (var band in @Model["allBands"])
+    {
+      <option value='@band.GetBandId()'>@band.GetBandName()</option>
+    }
+  </select> *@
+  <input id="band-name-update" name="band-name-update" type="text">
+  <button type='submit'>Update</button>
+</form>
+<br>
+<h4>Delete this band:</h4>
+
+<form action="/bands/@Model["band"].GetBandId()/delete" method='post'>
+  @* <h4><label for='band-id'>Select a band</label></h4> *@
+  @* <select id='band-id' name='band-id' type='text'>
+  @foreach (var band in @Model["allBands"])
+  {
+  <option value='@band.GetBandId()'>@band.GetBandName()</option>
+}
+</select> *@
+<button type='submit'>Delete</button>
+</form>
+<br>
+@* <form action="/bands/@Model["band"].GetBandId()/delete" method='post'>
+  <label for="band-id-delete">Select a band to delete</label>
+  <select id="band-id-delete" name="band-id-delete" type="text">
+    @foreach (var band in @Model["allBands"])
+    {
+      <option value="@band.GetBandId()">@band.GetBandName()</option>
+    }
+  </select>
+  <button type="submit">Delete band</button>
+</form> *@
 <p><a href="/">Return to Main Page</a></p>

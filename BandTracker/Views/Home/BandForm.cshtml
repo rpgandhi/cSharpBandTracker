@@ -10,3 +10,18 @@
 </form>
 <p><a href="/">Back home</a></p>
 <p><a href="/bands">View all bands</a></p>
+
+
+
+@* <h4>Delete a band:</h4>
+
+<form action="/bands/@Model["band"].GetBandId()/delete" method='post'>
+  <label for='band-id'>Select a band</label>
+  <select id='band-id' name='band-id' type='text'>
+    @foreach (var band in @Model["allBands"])
+    {
+      <option value='@band.GetBandId()'>@band.GetBandName()</option>
+    }
+  </select>
+  <button type='submit'>Delete</button>
+</form> *@

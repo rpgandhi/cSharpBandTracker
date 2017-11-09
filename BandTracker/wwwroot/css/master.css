@@ -3,3 +3,6 @@ body {
   background-image: url(".../BandTracker/wwwroot/img/concert.jpg");
   /*background-color: red;*/
 }
+.red {
+  color: red;
+}

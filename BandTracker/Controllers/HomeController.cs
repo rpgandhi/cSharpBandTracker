@@ -64,9 +64,16 @@ namespace BandTracker.Controllers
           Band selectedBand = Band.Find(id);
           List<Venue> BandVenues = selectedBand.GetVenues();
           List<Venue> AllVenues = Venue.GetAll();
+          List<Band> AllBands = Band.GetAll();
           model.Add("band", selectedBand);
           model.Add("bandVenues", BandVenues);
           model.Add("allVenues", AllVenues);
+          model.Add("allBands", AllBands);
+          // List<Band> VenueBands = SelectedVenue.GetBands();
+          // List<Band> AllBands = Band.GetAll();
+          // model.Add("venue", SelectedVenue);
+          // model.Add("venueBands", VenueBands);
+          // model.Add("allBands", AllBands);
           return View(model);
       }
 
@@ -79,13 +86,15 @@ namespace BandTracker.Controllers
           Venue SelectedVenue = Venue.Find(id);
           List<Band> VenueBands = SelectedVenue.GetBands();
           List<Band> AllBands = Band.GetAll();
+          List<Venue> AllVenues = Venue.GetAll();
           model.Add("venue", SelectedVenue);
           model.Add("venueBands", VenueBands);
           model.Add("allBands", AllBands);
+          model.Add("allVenues", AllVenues);
           return View(model);
       }
 
-      [HttpPost("venues/{venueId}/bands/new")]
+      [HttpPost("/venues/{venueId}/bands/new")]
       public ActionResult VenueAddBand(int venueId)
       {
           //Category = Venue
@@ -96,7 +105,7 @@ namespace BandTracker.Controllers
           return View("Success");
       }
 
-      [HttpPost("bands/{bandId}/venues/new")]
+      [HttpPost("/bands/{bandId}/venues/new")]
       public ActionResult BandAddVenue(int bandId)
       {
           //Category = Venue
@@ -105,6 +114,42 @@ namespace BandTracker.Controllers
           Venue venue = Venue.Find(Int32.Parse(Request.Form["venue-id"]));
           band.AddVenue(venue);
           return View("Success");
+      }
+
+      [HttpPost("/bands/{bandId}/delete")]
+      public ActionResult BandDelete(int bandId)
+      {
+        Band band = Band.Find(bandId);
+        band.Delete();
+        return View("Success");
+      }
+
+      [HttpPost("/bands/{bandId}/update")]
+      public ActionResult BandUpdate(int bandId)
+      {
+        Band band = Band.Find(bandId);
+        band.UpdateName(Request.Form["band-name-update"]);
+        // Band newName = new Band(Request.Form["band-name-update"]);
+        // newName.UpdateName();
+        return View("Success");
+      }
+
+      [HttpPost("/venues/{venueId}/delete")]
+      public ActionResult VenueDelete(int venueId)
+      {
+        Venue venue = Venue.Find(venueId);
+        venue.Delete();
+        return View("Success");
+      }
+
+      [HttpPost("/venues/{venueId}/update")]
+      public ActionResult VenueUpdate(int venueId)
+      {
+        Venue venue = Venue.Find(venueId);
+        venue.UpdateName(Request.Form["venue-name-update"]);
+        // Band newName = new Band(Request.Form["band-name-update"]);
+        // newName.UpdateName();
+        return View("Success");
       }
     }
 }
